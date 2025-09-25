@@ -1,6 +1,7 @@
-import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, HttpCode, HttpStatus, Get, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -12,7 +13,6 @@ export class AuthController {
     const user = await this.auth.validate(dto.email, dto.password);
     await this.auth.marcarUltimoLogin(user.id);
     const { access_token } = await this.auth.login(user);
-
     return {
       ok: true,
       access_token,
@@ -28,5 +28,11 @@ export class AuthController {
       },
     };
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('me')
+  me(@Req() req: any) {
+    // req.user viene del payload del JWT
+    return req.user;
+  }
 }
-// --- IGNORE ---
