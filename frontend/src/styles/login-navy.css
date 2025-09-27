@@ -1,0 +1,174 @@
+/* =============================
+   Login — Estilo navy inspirado en la maqueta
+   Compatible con tu HTML/JS sin cambiar IDs ni clases
+   ============================= */
+
+/* Fuente limpia (opcional). Si no la quieres, borra la línea */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  /* Paleta aproximada de la imagen */
+  --navy-900:#11164e;   /* fondo principal */
+  --navy-800:#161a59;   /* panel izq */
+  --text-100:#e8ebff;
+  --white:#ffffff;
+  --blue-500:#556BF9;  /* botón */
+  --blue-400:#7384ff;
+  --red-500:#EA2B2B;
+  --orange-500:#FF8A00;
+  --yellow-400:#F8C531;
+  --muted:#9aa1d3;
+  --ok:#18a957;
+  --error:#df3e3e;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+/* Reset básico y tipografía */
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0; background:var(--navy-900); color:var(--text-100);
+  font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  line-height:1.4; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+
+/* =============================
+   Layout principal
+   ============================= */
+.login-container{
+  position:relative; min-height:100dvh; width:100%;
+  display:flex; align-items:center; justify-content:flex-end;
+  padding:40px 5vw; /* resguardo lateral */
+  overflow:hidden;
+}
+
+/* Panel/arte geométrico del lado izquierdo — solo CSS */
+.login-container::before{
+  content:""; position:absolute; inset:0 auto 0 0; width:min(46%, 520px);
+  background:
+    /* manchas redondas translúcidas para profundidad */
+    radial-gradient(180px 180px at 15% 20%, rgba(255,255,255,.06), transparent 60%),
+    radial-gradient(220px 220px at 80% 70%, rgba(255,255,255,.05), transparent 60%),
+    /* mosaico geométrico con conic-gradients */
+    conic-gradient(from 0turn at 0 100%, var(--yellow-400) 25%, transparent 0) 0 0/200px 200px no-repeat,
+    conic-gradient(from .5turn at 100% 0, var(--orange-500) 25%, transparent 0) 100px 100px/200px 200px no-repeat,
+    radial-gradient(circle at 100% 0, var(--blue-500) 75px, transparent 76px) 0 100px/200px 200px no-repeat,
+    radial-gradient(circle at 0 100%, var(--red-500) 75px, transparent 76px) 100px 0/200px 200px no-repeat;
+  background-color:var(--navy-800);
+}
+
+/* Caja del login a la derecha */
+.login-box{
+  width:min(440px, 92vw);
+  margin-left:min(52%, 560px); /* empuja lejos del panel */
+  display:flex; flex-direction:column; align-items:stretch; gap:16px;
+}
+
+.login-logo{ width:72px; height:auto; object-fit:contain; filter:drop-shadow(0 6px 12px rgba(0,0,0,.25)); }
+
+h1{ margin:4px 0 6px; font-size:28px; font-weight:700; letter-spacing:.3px; }
+.login-subtitle{ margin:0 0 10px; color:var(--muted); }
+
+/* =============================
+   Formulario
+   ============================= */
+.login-form{ display:flex; flex-direction:column; gap:14px; }
+.input-group{ display:flex; flex-direction:column; gap:8px; }
+
+label{ font-size:.95rem; color:var(--text-100); }
+
+/* Inputs */
+input[type="email"], input[type="password"], .modal-input{
+  appearance:none; width:100%;
+  background:var(--white); color:#1d2240; border:none; outline:0;
+  padding:12px 14px; border-radius:8px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08), 0 2px 0 rgba(0,0,0,.04);
+  transition: box-shadow .2s ease, transform .06s ease;
+}
+
+input:focus, .modal-input:focus{ box-shadow:inset 0 0 0 2px var(--blue-500), 0 6px 18px rgba(0,0,0,.18); }
+
+/* Estados que disparas desde JS */
+input.valid{ box-shadow:inset 0 0 0 2px var(--ok), 0 4px 14px rgba(0,0,0,.12); }
+input.invalid{ box-shadow:inset 0 0 0 2px var(--error), 0 4px 14px rgba(0,0,0,.12); }
+
+/* Password con botón ojo */
+.password-wrapper{ position:relative; }
+.toggle-password{
+  position:absolute; right:8px; top:50%; transform:translateY(-50%);
+  background:transparent; border:0; padding:6px 8px; cursor:pointer;
+  color:#4a4f8e; border-radius:6px; transition:background .15s ease, transform .06s ease;
+}
+.toggle-password:hover{ background:rgba(17,22,78,.1); }
+.toggle-password:active{ transform:translateY(-50%) scale(.98); }
+
+/* Mensajes de error */
+.email-error{ font-size:.85rem; color:var(--error); display:none; }
+.email-error.show{ display:block; }
+
+/* Botón principal */
+.login-btn{
+  appearance:none; border:0; cursor:pointer; user-select:none;
+  background:var(--blue-500); color:var(--white); font-weight:600; font-size:1rem;
+  padding:12px 16px; border-radius:10px; box-shadow:var(--shadow);
+  transition:filter .15s ease, transform .06s ease, background .2s ease;
+}
+.login-btn:hover{ filter:brightness(1.05); }
+.login-btn:active{ transform:translateY(1px); }
+
+/* Footer */
+.login-footer{ margin-top:2px; font-size:.95rem; }
+.login-footer a{ color:var(--blue-400); text-decoration:none; }
+.login-footer a:hover{ text-decoration:underline; }
+
+/* =============================
+   Modal "¿Olvidaste tu contraseña?"
+   ============================= */
+.modal{
+  position:fixed; inset:0; display:grid; place-items:center; padding:24px;
+  background:color-mix(in oklab, black 55%, transparent); /* fallback abajo */
+  background:rgba(7,10,46,.65);
+  z-index:50;
+}
+.modal[aria-hidden="true"]{ display:none; }
+
+.modal-content{
+  width:min(520px, 96vw); background:var(--navy-800); color:var(--text-100);
+  border-radius:14px; padding:22px; box-shadow:var(--shadow);
+}
+.close{
+  position:absolute; margin:10px; right:10px; top:10px; width:36px; height:36px;
+  display:grid; place-items:center; border-radius:8px;
+  background:transparent; border:0; color:var(--text-100); cursor:pointer;
+}
+.close:hover{ background:rgba(255,255,255,.08); }
+
+.modal-title{ margin:6px 0 4px; font-size:22px; font-weight:700; }
+.modal-subtitle{ margin:0 0 14px; color:var(--muted); }
+.modal-form{ display:flex; flex-direction:column; gap:14px; }
+.modal-input-group{ display:flex; flex-direction:column; gap:8px; }
+.modal-label{ color:var(--text-100); }
+
+/* =============================
+   Responsivo
+   ============================= */
+@media (max-width: 980px){
+  .login-container{ justify-content:center; padding:28px 20px; }
+  .login-container::before{
+    inset:0 0 auto 0; height:230px; width:100%;
+    background-color:var(--navy-800);
+    /* reacomodo del mosaico para cabecera */
+    background-position:
+      0 0, 50% 100%, 0 100px, 100px 0;
+    background-size: 200px 200px, 200px 200px, 200px 200px, 200px 200px;
+  }
+  .login-box{ margin-left:0; margin-top:140px; }
+}
+
+@media (prefers-reduced-motion: no-preference){
+  .login-box, .modal-content{ animation: pop .2s ease-out both; }
+  @keyframes pop{ from{ opacity:0; transform:translateY(6px) scale(.98);} to{ opacity:1; transform:none; } }
+}
+
+
+
