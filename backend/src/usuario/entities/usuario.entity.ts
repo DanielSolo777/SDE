@@ -23,6 +23,9 @@ export class Usuario {
   @Column({ name: 'apellido_materno', length: 80, nullable: true })
   apellidoMaterno?: string;
 
+  @Column({ length: 20, nullable: true })
+  telefono?: string;
+
   @Column({ length: 120, nullable: true })
   puesto?: string;
 

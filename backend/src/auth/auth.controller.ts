@@ -23,6 +23,7 @@ export class AuthController {
         apellidoPaterno: user.apellidoPaterno,
         apellidoMaterno: user.apellidoMaterno,
         email: user.email,
+        telefono: user.telefono,
         rol: user.rol,
         activo: user.activo,
         canCreateUsers: user.canCreateUsers,
